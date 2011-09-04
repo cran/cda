@@ -63,22 +63,21 @@ demo(dimer_linear)
 
 > onedimer <- function(d = 200){
 +   clust <- makeRodChain(N=2, pitch=d*1e-3)
-+   m <- linear_extinction_spectrum(clust, gold, n=1.5, progress=FALSE)
++   m <- linear_extinction_spectrum(clust, gold, n=1.5)
 +   invisible(m)
 + }
 
 > params <- data.frame(d=seq(200, 400, by=10))
 
-> comparison <- mdply(params, onedimer, .progress="none")
+> comparison <- mdply(params, onedimer)
 
 > p <- 
-+   ggplot(data=comparison)+
++   ggplot(data=comparison) +
++   geom_path(aes(wavelength, value, linetype=variable,
++                 colour=d, group=interaction(d,variable))) +
 +   labs(y=expression(sigma[ext]*" /"*mu*m^2),
 +        x=expression(wavelength*" /"*mu*m),
-+        colour = expression(d/nm), linetype=expression(polarisation))+
-+   geom_path(aes(wavelength, value, linetype=variable,
-+                 colour=d,
-+                 group=interaction(d,variable)))+ theme_bw()
++        colour = expression(d/nm), linetype=expression(polarisation))
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -99,12 +98,12 @@ demo(dimer_cd)
 > onecluster <- function(handedness="right"){
 +   test <- handedness == "right"
 +   clust <- makeDimerCluster(d = 200e-3, phi=pi/4, right = test)
-+   m <- circular_dichroism_spectrum(clust, gold, n=1.33, N=36, progress=FALSE)
++   m <- circular_dichroism_spectrum(clust, gold, n=1.33, N=36)
 +   invisible(m)
 + }
 
 > params <- data.frame(handedness=c("right", "left"))
-> comparison <- mdply(params, onecluster, .progress="none")
+> comparison <- mdply(params, onecluster)
  
 > p <- ggplot(comparison) + facet_grid(type~., scales="free") +
 +   geom_hline(yintercept=0) +

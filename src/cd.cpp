@@ -10,6 +10,7 @@ using namespace RcppArmadillo ;
 
 using namespace std;
 
+// angular averaging using Gauss-Legendre quadrature
 arma::colvec averaging(const arma::mat& R, const arma::cx_mat& A, const arma::cx_mat& invalpha, \
 			const double kn, const arma::mat& QuadPhi, const arma::mat& QuadPsi)
   {
@@ -49,26 +50,26 @@ arma::colvec averaging(const arma::mat& R, const arma::cx_mat& A, const arma::cx
 	for(mm=0; mm<NqPsi; mm++){ // loop over psi
 	  psi = y[mm];
 	  Rot = euler(phi, pi/2, psi); // theta doesn't vary
-	  ELCP = sqrt(2)/2 * trans(Rot) * LCP ;
-	  ERCP = sqrt(2)/2 * trans(Rot) * RCP ;
+	  ELCP = sqrt(2.0)/2 * trans(Rot) * LCP ;
+	  ERCP = sqrt(2.0)/2 * trans(Rot) * RCP ;
 	  kr = R * trans(Rot) * kvec;
 	  expikr = exp(i*kr);
 	  
 	  factor = C1 * weights2[mm] * cos(psi) ;
 	  // left polarisation
-	Eincident = reshape(expikr * strans(ELCP), 3*N, 1, 1);
-	P = B * Eincident;
-	// P = solve(A, Eincident);// too slow, invert A before loop
-	tmpleft +=  factor * extinction(kn, P, Eincident); 
-	tmpleft2 +=  factor * absorption(kn, P, invalpha); 
-
-	// right polarisation
-	Eincident = reshape(expikr * strans(ERCP), 3*N, 1, 1);
-	P = B * Eincident; 
-	// P = solve(A, Eincident); // too slow, invert A before loop
-	tmpright +=  factor * extinction(kn, P, Eincident); 
-	tmpright2 +=  factor * absorption(kn, P, invalpha); 
-
+	  Eincident = reshape(expikr * strans(ELCP), 3*N, 1, 1);
+	  P = B * Eincident;
+	  // P = solve(A, Eincident);// too slow, invert A before loop
+	  tmpleft +=  factor * extinction(kn, P, Eincident); 
+	  tmpleft2 +=  factor * absorption(kn, P, invalpha); 
+	  
+	  // right polarisation
+	  Eincident = reshape(expikr * strans(ERCP), 3*N, 1, 1);
+	  P = B * Eincident; 
+	  // P = solve(A, Eincident); // too slow, invert A before loop
+	  tmpright +=  factor * extinction(kn, P, Eincident); 
+	  tmpright2 +=  factor * absorption(kn, P, invalpha); 
+	  
 	}
 	factor2 = C2 * weights1[ll];
 	left  += factor2 * tmpleft;
@@ -86,6 +87,7 @@ arma::colvec averaging(const arma::mat& R, const arma::cx_mat& A, const arma::cx
     return res ;
   } 
 
+// angular averaging using Quasi Monte Carlo integration
 arma::colvec averaging2(const arma::mat& R, const arma::cx_mat& A, const arma::cx_mat& invalpha, \
 			const double kn, const arma::mat& QMC)
   {
@@ -101,7 +103,7 @@ arma::colvec averaging2(const arma::mat& R, const arma::cx_mat& A, const arma::c
     const arma::colvec  khat="1 0 0;", kvec = kn*khat;
     arma::mat kr;
     arma::cx_mat expikr;
-    double left=0, right=0, left2=0, right2=0,phi=0,psi=0, factor=0;
+    double left=0, right=0, left2=0, right2=0,phi=0,psi=0;
     
     arma::cx_mat B = pinv(A); /* inverting the interaction matrix 
 				 to solve AP=Eincident multiple times */
@@ -111,10 +113,10 @@ arma::colvec averaging2(const arma::mat& R, const arma::cx_mat& A, const arma::c
     int ll=0; 
     for(ll=0; ll<NQMC; ll++){ // loop over integration points
       phi = QMC(ll, 1)*2*pi, psi = asin(2*QMC(ll, 0) - 1);
-      factor = 1; ///abs(cos(psi)) ;
+     
       Rot = euler(phi, pi/2, psi); // theta doesn't vary
-      ELCP = sqrt(2)/2 * trans(Rot) * LCP ;
-      ERCP = sqrt(2)/2 * trans(Rot) * RCP ;
+      ELCP = sqrt(2.0)/2 * trans(Rot) * LCP ;
+      ERCP = sqrt(2.0)/2 * trans(Rot) * RCP ;
       kr = R * trans(Rot) * kvec;
       expikr = exp(i*kr);
       
@@ -122,15 +124,15 @@ arma::colvec averaging2(const arma::mat& R, const arma::cx_mat& A, const arma::c
       Eincident = reshape(expikr * strans(ELCP), 3*N, 1, 1);
       P = B * Eincident;
       // P = solve(A, Eincident);// too slow, invert A before loop
-      left +=  factor*extinction(kn, P, Eincident); 
-      left2 +=  factor*absorption(kn, P, invalpha); 
+      left +=  extinction(kn, P, Eincident); 
+      left2 +=  absorption(kn, P, invalpha); 
       
       // right polarisation
       Eincident = reshape(expikr * strans(ERCP), 3*N, 1, 1);
       P = B * Eincident; 
       // P = solve(A, Eincident); // too slow, invert A before loop
-      right +=  factor*extinction(kn, P, Eincident); 
-      right2 += factor*absorption(kn, P, invalpha); 
+      right +=  extinction(kn, P, Eincident); 
+      right2 += absorption(kn, P, invalpha); 
       
     } 
 

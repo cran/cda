@@ -5,7 +5,7 @@
   array <- new( "Module" )
 
 
- .onLoad <- function(pkgname, libname){
+ .onLoad <- function(libname, pkgname){
      loadRcppModules(direct=FALSE)
  }
 
