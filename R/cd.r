@@ -9,23 +9,52 @@
 ##' @param cluster cluster (list)
 ##' @param material material
 ##' @param n refractive index medium
-##' @param N number of quadrature points
+##' @param N number of integration points
+##' @param averaging averaging method, using either Quasi Monte Carlo, Gauss Legendre, or regular grid
 ##' @param full logical use full (retarded) dipolar field
 ##' @param progress print progress lines
 ##' @param result.matrix logical return the results as a matrix
-##' @return data.frame or matrix of CD spectrum
-##' @author baptiste Auguié
-circular_dichroism_spectrum <- function(cluster, material, n=1.33, N=36, full=TRUE, progress=FALSE, result.matrix=FALSE){
+circular_dichroism_spectrum <- function(cluster, material, n=1.33, N=100, averaging = c("QMC","GL","grid"),
+                                         full=TRUE, progress=FALSE, result.matrix=FALSE){
 
-  GL <- gauss.quad(N)
-  GL2 <- gauss.quad(ceiling(N/2))
-  
+  averaging <- match.arg(averaging)
+
   k0 <- 2*pi/material$wavelength
   kn <- k0*n
   
   invalpha <- make.invalpha(cluster, material, polarizability.fun=polarizability.ellipsoid, n=n, kuwata=TRUE)
-  res <- cd$circular_dichroism_spectrum(kn, invalpha, cluster$r, cluster$angles,
-               as.matrix(cbind(GL$nodes, GL$weights)),as.matrix(cbind(GL2$nodes, GL2$weights)), as.integer(full), as.integer(progress))
+  
+  if(averaging == "QMC") # Quasi Monte Carlo, using Halton sequence from randtoolbox
+    {
+      nodes <- halton(N, dim = 2, normal=FALSE)
+  
+      res <- cd$circular_dichroism_spectrum2(kn, invalpha, cluster$r, cluster$angles, as.matrix(nodes),
+                                             as.integer(full), as.integer(progress))
+  
+    }
+  
+  if(averaging == "GL") # Gauss Legendre quadrature, using nodes and weights from statmod
+    {
+      ## divide phi[0-360] in 2*sqrt(N/2), and psi[-90-90] in sqrt(N/2) -> N points
+      rndN <- ceiling(sqrt(N/2))
+      GL <- gauss.quad(2*rndN)
+      GL2 <- gauss.quad(rndN)
+      
+      invalpha <- make.invalpha(cluster, material, polarizability.fun=polarizability.ellipsoid, n=n, kuwata=TRUE)
+      res <- cd$circular_dichroism_spectrum(kn, invalpha, cluster$r, cluster$angles,
+                                            as.matrix(cbind(GL$nodes, GL$weights)), as.matrix(cbind(GL2$nodes, GL2$weights)),
+                                            as.integer(full), as.integer(progress))
+      
+    }
+  if(averaging == "grid") # regular grid
+    {
+      a <- seq(0 + 0.01/sqrt(N),1-0.01/sqrt(N), length=round(sqrt(N))) # remove end points that cause problems
+      nodes <- expand.grid(x = a, y=a)
+      
+      res <- cd$circular_dichroism_spectrum2(kn, invalpha, cluster$r, cluster$angles, as.matrix(nodes),
+                                             as.integer(full), as.integer(progress))
+      
+    }
   
   if(result.matrix){
     ## extinction, absorption, CD ext, CD abs
@@ -63,4 +92,3 @@ circular_dichroism_spectrum <- function(cluster, material, n=1.33, N=36, full=TR
   }
   
 }
-

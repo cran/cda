@@ -86,6 +86,64 @@ arma::colvec averaging(const arma::mat& R, const arma::cx_mat& A, const arma::cx
     return res ;
   } 
 
+arma::colvec averaging2(const arma::mat& R, const arma::cx_mat& A, const arma::cx_mat& invalpha, \
+			const double kn, const arma::mat& QMC)
+  {
+    const int N = R.n_rows, NQMC = QMC.n_rows;
+    //constants
+    const arma::cx_double i = arma::cx_double(0,1);
+    const double pi = arma::math::pi();
+    arma::mat Rot(3,3);
+
+    // incident field
+    const arma::cx_colvec RCP="(0,0) (0,1) (1,0);", LCP="(0,0) (1,0) (0,1);";
+    arma::cx_colvec ERCP(3), ELCP(3), Eincident(3*N), P(3*N);
+    const arma::colvec  khat="1 0 0;", kvec = kn*khat;
+    arma::mat kr;
+    arma::cx_mat expikr;
+    double left=0, right=0, left2=0, right2=0,phi=0,psi=0, factor=0;
+    
+    arma::cx_mat B = pinv(A); /* inverting the interaction matrix 
+				 to solve AP=Eincident multiple times */
+
+    // begin integration
+    
+    int ll=0; 
+    for(ll=0; ll<NQMC; ll++){ // loop over integration points
+      phi = QMC(ll, 1)*2*pi, psi = asin(2*QMC(ll, 0) - 1);
+      factor = 1; ///abs(cos(psi)) ;
+      Rot = euler(phi, pi/2, psi); // theta doesn't vary
+      ELCP = sqrt(2)/2 * trans(Rot) * LCP ;
+      ERCP = sqrt(2)/2 * trans(Rot) * RCP ;
+      kr = R * trans(Rot) * kvec;
+      expikr = exp(i*kr);
+      
+      // left polarisation
+      Eincident = reshape(expikr * strans(ELCP), 3*N, 1, 1);
+      P = B * Eincident;
+      // P = solve(A, Eincident);// too slow, invert A before loop
+      left +=  factor*extinction(kn, P, Eincident); 
+      left2 +=  factor*absorption(kn, P, invalpha); 
+      
+      // right polarisation
+      Eincident = reshape(expikr * strans(ERCP), 3*N, 1, 1);
+      P = B * Eincident; 
+      // P = solve(A, Eincident); // too slow, invert A before loop
+      right +=  factor*extinction(kn, P, Eincident); 
+      right2 += factor*absorption(kn, P, invalpha); 
+      
+    } 
+
+    arma::colvec res(4) ;               
+    double normalisation;
+    normalisation = NQMC;
+    res(0) = left / normalisation; //ext L
+    res(1) = right / normalisation;//ext R
+    res(2) = left2 / normalisation; //abs L
+    res(3) = right2 / normalisation; //abs R
+    return res ;
+  } 
+
 arma::mat circular_dichroism_spectrum(const arma::colvec kn, const arma::cx_mat& Beta, const arma::mat& R, \
 				      const arma::mat& Euler, const arma::mat& QuadPhi, const arma::mat& QuadPsi, \
 				      const int full, const int progress)
@@ -118,13 +176,51 @@ arma::mat circular_dichroism_spectrum(const arma::colvec kn, const arma::cx_mat&
   } 
 
 
+arma::mat circular_dichroism_spectrum2(const arma::colvec kn, const arma::cx_mat& Beta, const arma::mat& R, \
+				      const arma::mat& Euler, const arma::mat& QMC, \
+				      const int full, const int progress)
+  {
+
+    int N = kn.n_elem, Nr = R.n_rows, ll;
+    // cout << N << "\n";
+    arma::mat res(N,4);
+    arma::cx_mat beta(3,Nr);
+    arma::colvec tmp(4);
+    arma::cx_mat A(3*Nr,3*Nr), polar(3*Nr,3*Nr);
+
+    for(ll=0; ll<N; ll++){ // loop over kn   
+      if(progress == 1)
+	progress_bar(ll+1,N);
+      beta = reshape(Beta.row(ll), 3, Nr, 1); 
+      A = interaction_matrix(R, kn[ll], beta, Euler, full);
+      polar = diagonal_polarisability(beta, Euler);
+      tmp = averaging2(R, A, polar, kn[ll], QMC);
+
+      res(ll,0) = 0.5*(tmp(0) + tmp(1)); // extinction 
+      res(ll,1) = 0.5*(tmp(2) + tmp(3)); // absorption
+      res(ll,2) = tmp(0) - tmp(1); // cd ext
+      res(ll,3) = tmp(2) - tmp(3); // cd abs
+    }
+    if(progress == 1)
+      cout<<"\n";
+
+    return res ;
+  } 
+
+
 RCPP_MODULE(cd){
        using namespace Rcpp ;
+
+       function( "circular_dichroism_spectrum2", &circular_dichroism_spectrum2, \
+		 "Calculates the orientation-averaged CD spectrum for absorption and extinction" ) ;
 
        function( "circular_dichroism_spectrum", &circular_dichroism_spectrum, \
 		 "Calculates the orientation-averaged CD spectrum for absorption and extinction" ) ;
 
 }
+
+
+
 
 
 

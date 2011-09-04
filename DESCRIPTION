@@ -12,17 +12,16 @@ Description: Given a set of ellipsoidal nanoparticles (positions and
         equations by direct inversion of the interaction matrix.
         Retardation is included in the interaction.
 SystemRequirements: GNU make
-Version: 1.0
+Version: 1.1.1
 BuildVignettes: false
-Date: 2011-05-15
+Date: 2011-09-04
 Depends: methods, Rcpp (>= 0.9.5), RcppArmadillo (>= 0.2.3), plyr,
-        ggplot2, statmod
+        ggplot2, statmod, randtoolbox
 Suggests: dielectric, rgl, gridExtra
 RcppModules: cda, cd, linear, array
-Encoding: UTF-8
 Collate: 'array.factor.R' 'cd.r' 'cda-package.r' 'epsilon.r' 'linear.r'
         'polarizability.R' 'positions.R' 'povray.r' 'rgl.r' 'themes.r'
         'zzz.r'
-Packaged: 2011-07-25 21:40:31 UTC; auguieba
+Packaged: 2011-09-04 00:41:36 UTC; baptiste
 Repository: CRAN
-Date/Publication: 2011-07-25 22:02:38
+Date/Publication: 2011-09-04 06:38:44
