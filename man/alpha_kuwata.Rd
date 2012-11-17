@@ -1,14 +1,14 @@
 \name{alpha_kuwata}
+\alias{alpha_kuwata}
 \alias{Kuwata.A}
 \alias{Kuwata.B}
-\alias{alpha_kuwata}
 \title{alpha_kuwata}
 \usage{
-  alpha_kuwata(lambda, epsilon, V, axis, L,
-    epsilon.medium = 1.33^2)
+  alpha_kuwata(wavelength, epsilon, V, axis, L,
+    medium = 1.33)
 }
 \arguments{
-  \item{lambda}{wavelength}
+  \item{wavelength}{wavelength}
 
   \item{epsilon}{permittivity}
 
@@ -18,7 +18,7 @@
 
   \item{L}{shape factor}
 
-  \item{epsilon.medium}{medium permittivity}
+  \item{medium}{refractive index}
 }
 \value{
   polarizability
@@ -33,8 +33,8 @@
   baptiste Auguie
 }
 \seealso{
-  Other user_level polarizability: \code{\link{La}},
-  \code{\link{make.invalpha}},
-  \code{\link{polarizability.ellipsoid}}
+  Other user_level polarizability:
+  \code{\link{inverse_polarizability}}, \code{\link{La}},
+  \code{\link{polarizability_ellipsoid}}
 }
 

@@ -2,13 +2,13 @@
 \alias{epsAg}
 \title{epsAg}
 \usage{
-  epsAg(lambda, epsilon.infty = 4, lambda.p = 282,
+  epsAg(wavelength, epsilon.inf = 4, lambda.p = 282,
     mu.p = 17000)
 }
 \arguments{
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
-  \item{epsilon.infty}{background dielectric constant}
+  \item{epsilon.inf}{background dielectric constant}
 
   \item{lambda.p}{plasma wavelength}
 

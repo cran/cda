@@ -2,14 +2,14 @@
 \alias{La}
 \title{La}
 \usage{
-  La(a = 0.05, b = a, c = a)
+  La(a = 50, b = a, c = a)
 }
 \arguments{
-  \item{a}{semi-axis in um}
+  \item{a}{semi-axis in nm}
 
-  \item{b}{semi-axis in um}
+  \item{b}{semi-axis in nm}
 
-  \item{c}{semi-axis in um}
+  \item{c}{semi-axis in nm}
 }
 \value{
   shape factor along a
@@ -25,7 +25,8 @@
 }
 \seealso{
   Other user_level polarizability:
-  \code{\link{alpha_kuwata}}, \code{\link{make.invalpha}},
-  \code{\link{polarizability.ellipsoid}}
+  \code{\link{alpha_kuwata}},
+  \code{\link{inverse_polarizability}},
+  \code{\link{polarizability_ellipsoid}}
 }
 

@@ -2,13 +2,13 @@
 \alias{helix}
 \title{helix}
 \usage{
-  helix(R0 = 0.5, pitch = 0.6, N = 5, delta = pi/8,
+  helix(R0 = 500, pitch = 600, N = 5, delta = pi/8,
     delta0 = pi/2, n.smooth = 100 * N, right = TRUE)
 }
 \arguments{
-  \item{R0}{radius in microns}
+  \item{R0}{radius in nm}
 
-  \item{pitch}{pitch in microns}
+  \item{pitch}{pitch in nm}
 
   \item{N}{number of particles}
 
@@ -32,27 +32,22 @@
   add particles on an helix
 }
 \examples{
-cl <- helix(0.5, 1, 36, delta=pi/6, n.smooth=1e3) ; str(cl)
-\dontrun{require(rgl)
+cl <- helix(500, 1000, 36, delta=pi/6, n.smooth=1e3) ; str(cl)
+\dontrun{
+require(rgl)
 open3d()
-spheres3d(cl$smooth, radius=0.01,col=2)
-spheres3d(cl$positions, radius=0.1, col="gold")
+spheres3d(cl$smooth, radius=1,col=2)
 ## ellipsoids are oriented following the helix
-sizes <- clust.equalsizes(0.04,0.02,0.02,NROW(cl$positions))
-rgl.ellipsoids(cl$positions, sizes, cl$angles, col="gold") }
+sizes <- equal_sizes(40, 20, 20,NROW(cl$positions))
+rgl.ellipsoids(cl$positions, sizes, cl$angles, col="gold")
+}
 }
 \author{
   baptiste Auguie
 }
 \seealso{
-  Other user_level cluster:
-  \code{\link{clust.equalangles}},
-  \code{\link{clust.equalsizes}}, \code{\link{helix.zt}},
-  \code{\link{makeDimerCluster}},
-  \code{\link{makeDimerDihedral}},
-  \code{\link{makeHelixCluster}},
-  \code{\link{makeHelixCluster.zt}},
-  \code{\link{makeRodChain}},
-  \code{\link{makeSpheresCluster}}
+  Other user_level cluster: \code{\link{cluster_chain}},
+  \code{\link{cluster_dimer}}, \code{\link{cluster_helix}},
+  \code{\link{equal_angles}}, \code{\link{equal_sizes}}
 }
 

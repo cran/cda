@@ -2,13 +2,13 @@
 \alias{epsAu}
 \title{epsAu}
 \usage{
-  epsAu(lambda, epsilon.infty = 1.54, lambda.p = 177.5,
+  epsAu(wavelength, epsilon.infty = 1.54, lambda.p = 177.5,
     mu.p = 14500, A1 = 1.27, phi1 = -pi/4, lambda1 = 470,
     mu1 = 1900, A2 = 1.1, phi2 = -pi/4, lambda2 = 325,
     mu2 = 1060)
 }
 \arguments{
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
   \item{epsilon.infty}{background dielectric constant}
 
