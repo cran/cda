@@ -1,4 +1,4 @@
-041753751c99cde2a56567ed64b25799 *DESCRIPTION
+c731def7272fef914402e268d798b4a0 *DESCRIPTION
 1931fc2a9aa1482bcc38433e92b3fa70 *NAMESPACE
 deaa291ca5b1131fdf39e1d6a7c73456 *NEWS
 bcbb1c5907c4413d18719476b3a7ebec *R/array_factor.R
@@ -83,15 +83,15 @@ d794272b546151aad35fbd8269758118 *man/linear_extinction_spectrum.Rd
 124da6e10756008796eae4cf30aa16c7 *man/rgl.ellipsoid.Rd
 df4df349bbd645a23ce1effca459c075 *man/rgl.ellipsoids.Rd
 ec5af5d7f028665551da319fba501e7e *src/Makevars
-2049adca156df17f8fabe98e7588ecfd *src/array.cpp
+9d353d310c92b4f4ff79e2897cad8bfe *src/array.cpp
 efb2688b5315be6aff7a9774f901cba7 *src/array.h
-b92f1f8cd1925a5ba1205e87b59aa28b *src/cd.cpp
+034f004ebb5318b050fb18de3e92d7ce *src/cd.cpp
 86e36de74947a61a14ed0e54a3638a0c *src/cd.h
-d8a12e78f5c9ed1ce7f563518c596949 *src/cda.cpp
+aa047eed370b60fb56543545d1da27a6 *src/cda.cpp
 c85fcbc3a1b6e0b7bc9f4ef8b0bddf52 *src/cda.h
-63a58f4ee830b43dd19b6cd578175a5d *src/internals.cpp
+854d18c5d2a061a5d061ceedcbaf5883 *src/internals.cpp
 838b7e028668528df05c9e0d9c82967d *src/internals.h
-0b7b1b8238e8ec23af447884dc79df18 *src/linear.cpp
+d9c923181e5ccaa8aaf06e39f3d1dd95 *src/linear.cpp
 01943c0d9271af796f65a99cf04eb32d *src/linear.h
 35b6d8d56ce02e7e5730d8a75b241f08 *src/utils.cpp
 f46214ce67241862e0dbbde371957b17 *src/utils.h
