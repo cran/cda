@@ -16,7 +16,7 @@
 ##' @export
 ##' @family user_level cluster
 equal_sizes <- function(a, b, c, N)
-ldply(1:N, function(.) data.frame(a=a, b=b, c=c))
+  data.frame(a = rep(a, N), b = rep(b, N), c = rep(c, N))
 
 
 ##' equal_angles
@@ -119,6 +119,35 @@ cluster_dimer <- function(d=a,
   
 }
 
+##' cluster_dimer_end
+##'
+##' cluster with two nanorods
+##' first rod along x at (0, 0, -d/2)
+##' second rod at (0, 0, d/2)
+##' @title cluster_dimer_end
+##' @param d end-to-end distance
+##' @param dihedral dihedral angle
+##' @param a semi axis
+##' @param b semi axis
+##' @param rescale logical, rescale the z coordinates so that d is the center-to-center distance
+##' @return list with r,  sizes,  angles
+##' @author baptiste Auguie
+##' @export
+##' @family user_level cluster
+cluster_dimer_end <- function(d=a, 
+                          dihedral=0, 
+                          a=35e-3, b=12e-3, rescale=TRUE){
+   if(rescale)
+     d <- sqrt(d^2 - 2*a^2*(1 - cos(dihedral)))
+  
+  r <- rbind(c(a,0,0), 
+             c(a*cos(dihedral),a*sin(dihedral),d))
+  sizes <- equal_sizes(a=a, b=b, c=b, N=2)  
+  angles <- rbind(c(0, pi/2, 0), 
+                  c(dihedral, pi/2, 0))
+  list(r=r, sizes=sizes, angles=angles)
+  
+}
 
 ##' cluster_chain
 ##'

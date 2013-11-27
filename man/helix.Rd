@@ -2,8 +2,8 @@
 \alias{helix}
 \title{helix}
 \usage{
-  helix(R0 = 500, pitch = 600, N = 5, delta = pi/8,
-    delta0 = pi/2, n.smooth = 100 * N, right = TRUE)
+helix(R0 = 500, pitch = 600, N = 5, delta = pi/8, delta0 = pi/2,
+  n.smooth = 100 * N, right = TRUE)
 }
 \arguments{
   \item{R0}{radius in nm}
@@ -22,14 +22,14 @@
   \item{right}{logical, handedness}
 }
 \value{
-  list with r, sizes, invalpha, angles, R0 and smooth
-  interp. points
+list with r, sizes, invalpha, angles, R0 and smooth interp.
+points
 }
 \description{
-  helix curve
+helix curve
 }
 \details{
-  add particles on an helix
+add particles on an helix
 }
 \examples{
 cl <- helix(500, 1000, 36, delta=pi/6, n.smooth=1e3) ; str(cl)
@@ -43,11 +43,13 @@ rgl.ellipsoids(cl$positions, sizes, cl$angles, col="gold")
 }
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 \seealso{
-  Other user_level cluster: \code{\link{cluster_chain}},
-  \code{\link{cluster_dimer}}, \code{\link{cluster_helix}},
-  \code{\link{equal_angles}}, \code{\link{equal_sizes}}
+Other user_level cluster: \code{\link{cluster_chain}},
+\code{\link{cluster_dimer}},
+\code{\link{cluster_dimer_end}},
+\code{\link{cluster_helix}}, \code{\link{equal_angles}},
+\code{\link{equal_sizes}}
 }
 

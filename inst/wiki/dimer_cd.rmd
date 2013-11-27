@@ -4,6 +4,8 @@ In this example the optical activity of a chiral dimer of axi-symmetric nanopart
 library(cda)
 library(rgl)
 library(ggplot2)
+library(reshape2)
+library(plyr)
 ```
 ```{r setup,echo=FALSE}
 knit_hooks$set(rgl = function(before, options, envir) {
@@ -61,7 +63,7 @@ p <-
   facet_grid(type~variable, scales="free") +
   geom_line(aes(wavelength, value, 
                 colour=factor(dihedral))) +
-  labs(y=expression(sigma[ext]*" /"*nm^2),
+  labs(y=expression(sigma*" /"*nm^2),
        x=expression(wavelength*" /"*nm), colour="dihedral angle") +
          scale_colour_brewer(type="div", palette=3)
 

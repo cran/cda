@@ -1,9 +1,12 @@
 
-## @knitr load
+## ----load,message=FALSE, echo=1:6----------------------------------------
 require(cda)
 require(ggplot2)
 require(microbenchmark)
 require(xtable)
+library(reshape2)
+library(plyr)
+library(knitr)
 
 theme_set(theme_minimal())
 display_benchmark <- function(x, unit = "t"){
@@ -15,8 +18,8 @@ display_benchmark <- function(x, unit = "t"){
 }
 
 
-## @knitr cluster
-gold <- epsAu(seq(400, 900))
+## ----cluster, tidy=FALSE, fig.path='averaging-'--------------------------
+gold <- epsAu(seq(600, 800))
 
 cl <- cluster_dimer(d=100, 
               dihedral=10*pi/180, alpha1=20*pi/180, alpha2=0,
@@ -29,26 +32,31 @@ cl2 <- cluster_dimer(d=100,
 
 
 
-## @knitr comparison
-params <- expand.grid(N=c(10, 100, 1000, 5000),
+## ----comparison, tidy=FALSE, fig.path='averaging-'-----------------------
+params <- expand.grid(Nquad=c(10, 50, 100, 1000),
                        averaging=c("grid", "GL", "QMC"),
                        stringsAsFactors=FALSE)
 
 comparison <- mdply(params, circular_dichroism_spectrum, cluster=cl, material=gold)
+cheap <- circular_dichroism_spectrum(cluster=cl, material=gold, averaging="cheap")
+converged <- circular_dichroism_spectrum(cluster=cl, material=gold, averaging="QMC", Nquad=5000)
 
 p <- 
-  ggplot(subset(comparison, type == "CD" & variable == "extinction")) + 
-  facet_grid(averaging~.)+
-  geom_path(aes(wavelength, value, colour=factor(N), group=N))+
+  ggplot(subset(comparison, type == "CD" & variable == "extinction"),
+         aes(wavelength, value)) + 
+  facet_grid(averaging~., scales="free")+
+  geom_path(aes(colour=factor(Nquad), group=Nquad))+
+  geom_path(data=subset(cheap, type == "CD" & variable == "extinction"), linetype=2)+
+  geom_path(data=subset(converged, type == "CD" & variable == "extinction"))+
   labs(y=expression(sigma[ext]/nm^2),
        x=expression(wavelength/nm), colour=expression(N))
 
 p
 
 
-## @knitr achiral
-params <- expand.grid(N=c(10, 100, 1000, 5000),
-                       averaging=c("grid", "GL", "QMC"),
+## ----achiral, tidy=FALSE, fig.path='averaging-'--------------------------
+params <- expand.grid(Nquad=c(10, 100, 1000, 5000),
+                       averaging=c("grid", "GL", "QMC", "cheap"),
                        stringsAsFactors=FALSE)
 
 comparison <- mdply(params, circular_dichroism_spectrum, cluster=cl2, material=gold)
@@ -56,7 +64,7 @@ comparison <- mdply(params, circular_dichroism_spectrum, cluster=cl2, material=g
 p <- 
   ggplot(subset(comparison, type == "CD" & variable == "extinction")) + 
   facet_grid(averaging~.)+
-  geom_path(aes(wavelength, value, colour=factor(N), group=N))+
+  geom_path(aes(wavelength, value, colour=factor(Nquad), group=Nquad))+
   labs(y=expression(sigma[ext]/nm^2),
        x=expression(wavelength/nm), colour=expression(N))
 

@@ -1,11 +1,10 @@
 \name{alpha_kuwata}
-\alias{alpha_kuwata}
 \alias{Kuwata.A}
 \alias{Kuwata.B}
+\alias{alpha_kuwata}
 \title{alpha_kuwata}
 \usage{
-  alpha_kuwata(wavelength, epsilon, V, axis, L,
-    medium = 1.33)
+alpha_kuwata(wavelength, epsilon, V, axis, L, medium = 1.33)
 }
 \arguments{
   \item{wavelength}{wavelength}
@@ -21,20 +20,25 @@
   \item{medium}{refractive index}
 }
 \value{
-  polarizability
+polarizability
 }
 \description{
-  polarizability
+polarizability
 }
 \details{
-  prescription from Kuwata
+prescription from Kuwata
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
+}
+\references{
+Kuwata et al. Resonant light scattering from metal
+nanoparticles: Practical analysis beyond Rayleigh
+approximation Appl. Phys. Lett. 83, 22 (2003)
 }
 \seealso{
-  Other user_level polarizability:
-  \code{\link{inverse_polarizability}}, \code{\link{La}},
-  \code{\link{polarizability_ellipsoid}}
+Other user_level polarizability:
+\code{\link{inverse_polarizability}}, \code{\link{La}},
+\code{\link{polarizability_ellipsoid}}
 }
 

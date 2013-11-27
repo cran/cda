@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Design considerations and structure of the CDA package</title>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Design considerations and structure of the CDA package</h1>
+
+<!-- 
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{design}
+-->
+
+<h2>Description of a cluster at the R level</h2>
+
+<p>A cluster describes the geometry of N particles in a list,</p>
+
+<ul>
+<li><p><code>r</code> is a data.frame of 3 columns (x, y, z) and N rows</p></li>
+<li><p><code>angles</code> is a data.frame of 3 columns (x, y, z) and N rows </p></li>
+<li><p><code>sizes</code> is a data.frame of 3 columns (x, y, z) and N rows</p></li>
+</ul>
+
+<h2>Polarisability</h2>
+
+<p>The principal values of the inverse polarisability tensor of every particle are passed in a matrix Beta, with 3N rows (1/\(\alpha_x\),1/\(\alpha_y\),1/\(\alpha_z\)) for N particles, and Nlambda columns.</p>
+
+<p>This matrix is formed from the sizes of the cluster, and the material and medium properties.</p>
+
+<h2>Functions at the R level</h2>
+
+<h3>Modelling spectra</h3>
+
+<ul>
+<li><p><code>circular_dichroism_spectrum</code></p></li>
+<li><p><code>dispersion_spectrum</code></p></li>
+</ul>
+
+<h3>Clusters</h3>
+
+<ul>
+<li><p><code>cluster_chain</code> </p></li>
+<li><p><code>cluster_dimer</code> </p></li>
+<li><p><code>cluster_dimer2</code> </p></li>
+<li><p><code>cluster_helix</code></p></li>
+</ul>
+
+<h3>Utilities</h3>
+
+<ul>
+<li><p><code>array_factor</code></p></li>
+<li><p><code>alpha_kuwata</code> </p></li>
+<li><p><code>equal_angles</code></p></li>
+<li><p><code>equal_sizes</code></p></li>
+<li><p><code>helix</code></p></li>
+<li><p><code>inverse_polarizability</code></p></li>
+<li><p><code>La</code></p></li>
+<li><p><code>polarizability_ellipsoid</code></p></li>
+</ul>
+
+<h3>Visualisation</h3>
+
+<ul>
+<li><p><code>curve_povray</code></p></li>
+<li><p><code>particles_povray</code></p></li>
+<li><p><code>rgl.ellipsoid</code></p></li>
+<li><p>rgl.ellipsoids</p></li>
+</ul>
+
+<h2>Structure of the core C++ components</h2>
+
+<ul>
+<li><p>A is a 3Nx3N complex matrix</p></li>
+<li><p>Adiag is a 3Nx3N complex matrix</p></li>
+<li><p>Beta is a 3NxNlambda complex matrix</p></li>
+</ul>
+
+<h2>Functions at the C++ level</h2>
+
+<h3>Array</h3>
+
+<p><code>array_factor</code> Dipole sum (truncated) for 2D square array</p>
+
+<h3>CDA</h3>
+
+<ul>
+<li><p><code>incident_field</code> Calculate the incident field at each dipole location </p></li>
+<li><p><code>block_diagonal</code> Construct the diagonal blocks of the interaction matrix</p></li>
+<li><p><code>interaction_matrix</code> Construct the full interaction matrix</p></li>
+<li><p><code>extinction</code> Calculate the extinction cross-section for multiple incident angles</p></li>
+<li><p><code>absorption</code> Calculate the absorption cross-section for multiple incident angles</p></li>
+</ul>
+
+<h3>CD</h3>
+
+<ul>
+<li><p><code>averaging</code> Performs full angular averaging for both circular polarisations</p></li>
+<li><p><code>average_spectrum</code> Angular-average spectra for LCP and RCP polarisations </p></li>
+</ul>
+
+<h3>Dispersion</h3>
+
+<ul>
+<li><p><code>multiple_incident_field</code> Incident field along multiple axes</p></li>
+<li><p><code>dispersion</code> Angle-resolved cross-sections for multiple directions of incidence</p></li>
+<li><p><code>dispersion_spectrum</code> Angle-resolved spectra for linear or circular polarisations</p></li>
+</ul>
+
+<h3>Utils</h3>
+
+<ul>
+<li><p><code>euler</code> Euler rotation matrix</p></li>
+<li><p><code>axis_rotation</code> Rotation matrix about a cartesian axis</p></li>
+</ul>
+
+</body>
+
+</html>

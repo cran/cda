@@ -2,9 +2,8 @@
 \alias{rgl.ellipsoid}
 \title{rgl.ellipsoid}
 \usage{
-  rgl.ellipsoid(x = 0, y = 0, z = 0, a = 1, b = 1, c = 1,
-    phi = 0, theta = 0, psi = 0, subdivide = 3,
-    smooth = TRUE, ...)
+rgl.ellipsoid(x = 0, y = 0, z = 0, a = 1, b = 1, c = 1, phi = 0,
+  theta = 0, psi = 0, subdivide = 3, smooth = TRUE, ...)
 }
 \arguments{
   \item{x}{x}
@@ -32,22 +31,22 @@
   \item{...}{additional params}
 }
 \value{
-  an rgl mesh
+an rgl mesh
 }
 \description{
-  creates an rgl ellipsoid
+creates an rgl ellipsoid
 }
 \details{
-  deforms, rotate, and translate a sphere
+deforms, rotate, and translate a sphere
 }
 \examples{
 \dontrun{ require(rgl) ;  ee <- rgl.ellipsoid()
 shapelist3d(ee) }
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 \seealso{
-  Other user_level rgl: \code{\link{rgl.ellipsoids}}
+Other user_level rgl: \code{\link{rgl.ellipsoids}}
 }
 

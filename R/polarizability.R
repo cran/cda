@@ -4,7 +4,7 @@
 
 ##' principal polarizability components for an ellipsoidal particle
 ##'
-##' uses the Kuwata prescription
+##' uses the Kuwata prescription (see references)
 ##' @title polarizability_ellipsoid
 ##' @param wavelength wavelength in nm
 ##' @param epsilon complex permittivity
@@ -12,12 +12,16 @@
 ##' @param b semi-axis in nm
 ##' @param c semi-axis in nm
 ##' @param medium surrounding medium
-##' @param kuwata logical, use Kuwata or Clausius Mossotti
+##' @param kuwata logical, use Kuwata or Clausius Mossotti prescription, see Details
 ##' @return matrix of polarizability
 ##' @export
 ##' @family user_level polarizability
 ##' @author baptiste Auguie
-polarizability_ellipsoid <- function(wavelength, epsilon, a=50, b=30 , c=b, 
+##' @references
+##' Kuwata et al. Resonant light scattering from metal nanoparticles: Practical analysis beyond Rayleigh approximation Appl. Phys. Lett. 83, 22 (2003)
+##' @details 
+##' The Kuwata version includes semi-empirical terms of radiative correction and dynamic depolarisation to better match the fully retarded dipolar response in a reasonable range of (subwavelength) sizes and aspect ratios.
+polarizability_ellipsoid <- function(wavelength, epsilon, a=50, b=30, c=b, 
                                      medium = 1.33, kuwata= TRUE) 
 {
   if(kuwata){
@@ -26,13 +30,13 @@ polarizability_ellipsoid <- function(wavelength, epsilon, a=50, b=30 , c=b,
     chi.b <- La(b, a, c)
     chi.c <- La(c, a, b)
 
-    alpha.kuwata.a <- alpha_kuwata(wavelength, epsilon, V, a, chi.a, 
+    aa <- alpha_kuwata(wavelength, epsilon, V, a, chi.a, 
                                    medium)
-    alpha.kuwata.b <- alpha_kuwata(wavelength, epsilon, V, b, chi.b, 
+    ab <- alpha_kuwata(wavelength, epsilon, V, b, chi.b, 
                                    medium)
-    alpha.kuwata.c <- alpha_kuwata(wavelength, epsilon, V, c, chi.c, 
+    ac <- alpha_kuwata(wavelength, epsilon, V, c, chi.c, 
                                    medium)
-    return(cbind(alpha.kuwata.a, alpha.kuwata.b, alpha.kuwata.c))
+    return(cbind(aa, ab, ac))
   } else {
     cm <- a^3*(epsilon - medium^2) / (epsilon +2*medium^2)
     return(cbind(cm,cm,cm))
@@ -79,6 +83,8 @@ La <- function (a = 50, b = a, c = a)
 ##' @export
 ##' @family user_level polarizability
 ##' @author baptiste Auguie
+##' @references
+##' Kuwata et al. Resonant light scattering from metal nanoparticles: Practical analysis beyond Rayleigh approximation Appl. Phys. Lett. 83, 22 (2003)
 alpha_kuwata <-
 function (wavelength, epsilon, V, axis, L, medium = 1.33) 
 {
@@ -110,14 +116,15 @@ Kuwata.B <- function(L){
 ##' @param polarizability_fun polarizability function
 ##' @param ... additional arguments passed to polarizability_fun
 ##' @return  matrix with each row being the 3 principal values of each polarizability tensor
+##' @importFrom plyr mlply
 ##' @export
 ##' @family user_level polarizability
 ##' @author Baptiste Auguie
 inverse_polarizability <- function(cluster, material, 
                           polarizability_fun = polarizability_ellipsoid, ...){
-  polar <- mlply(cluster$sizes, polarizability_fun,
+  polar <- mlply(cluster[['sizes']], polarizability_fun,
                  wavelength=material$wavelength,
                  epsilon=material$epsilon, ...)
-  invalpha <- as.matrix(1/do.call(cbind, polar))
+  invalpha <- t(1/do.call(cbind, polar))
   
 }

@@ -2,8 +2,7 @@
 \alias{curve_povray}
 \title{curve_povray}
 \usage{
-  curve_povray(positions, size = 0.005, radius,
-    out = "positions.pov")
+curve_povray(positions, size = 0.005, radius, out = "positions.pov")
 }
 \arguments{
   \item{positions}{matrix of positions}
@@ -15,18 +14,18 @@
   \item{out}{output filename}
 }
 \value{
-  side-effect only (note append=TRUE)
+side-effect only (note append=TRUE)
 }
 \description{
-  create long string of small particles for povray input
+create long string of small particles for povray input
 }
 \details{
-  writes a list of particles, as well as cylinder
+writes a list of particles, as well as cylinder
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 \seealso{
-  Other user_level povray: \code{\link{particles_povray}}
+Other user_level povray: \code{\link{particles_povray}}
 }
 

@@ -1,0 +1,7 @@
+* test examples
+
+* polarisability port to c++, higher-level function for fast optimization
+
+* find/write an iterative solver for the CDA equations, e.g qmr, gmres, CG etc.
+
+* check the cheap accuracy for short wavelengths
