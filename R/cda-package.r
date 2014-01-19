@@ -6,9 +6,8 @@
 ##' @name cda-package
 ##' @docType package
 ##' @useDynLib cda
-##' @import Rcpp
-##' @import RcppArmadillo
 ##' @import dielectric
+##' @import Rcpp
 ##' @import methods
 ##' @title cda
 ##' @keywords package
@@ -45,7 +44,7 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'  \item{array_factor}{truncated lattice sum for a finite 2D square array}
+##'  \item{array_factor}{ Truncated lattice sum for a finite 2D square array}
 ##' }
 ##' @examples
 ##' show( array )
@@ -59,7 +58,7 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'  \item{average_spectrum}{Loop over wavelengths and calculate the orientation averaging of the difference in extinction, absorption, scattering for left/right circularly polarised light}
+##'  \item{average_spectrum}{ Loop over wavelengths and calculate the orientation averaging of the difference in extinction, absorption, scattering for left/right circularly polarised light}
 ##' }
 ##' @examples
 ##' show( cd )
@@ -73,14 +72,14 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'   \item{absorption}{absorption cross-section}
-##'   \item{extinction}{ extinction cross-section }
-##'   \item{axis_rotation}{3D rotation matrix parametrized by axis + angle}
-##'   \item{euler}{3D rotation matrix parametrized by Euler angles }
-##'   \item{interaction_matrix}{ build the coupled-dipole interaction matrix }
-##'   \item{block_diagonal}{diagonal blocks of the coupled-dipole interaction matrix }
-##'   \item{incident_field}{construct the incident fields for specific Euler angles}
-##'   \item{multiple_incident_field}{construct the incident fields for specific axes+angles}
+##'   \item{absorption}{ Absorption cross-section}
+##'   \item{extinction}{ Extinction cross-section }
+##'   \item{axis_rotation}{ 3D rotation matrix parametrized by axis + angle}
+##'   \item{euler}{ 3D rotation matrix parametrized by Euler angles }
+##'   \item{interaction_matrix}{ Build the coupled-dipole interaction matrix }
+##'   \item{block_diagonal}{ Diagonal blocks of the coupled-dipole interaction matrix }
+##'   \item{incident_field}{ Construct the incident fields for specific Euler angles}
+##'   \item{multiple_incident_field}{ Construct the incident fields for specific axes+angles}
 ##' }
 ##' @examples
 ##' show( cda )
@@ -96,15 +95,14 @@ NULL
 ##' The calculation was made using code from Prof. J. G. de Abajo (CSIC, Spain)
 ##' @format
 ##'   \describe{
-##'    \item{\code{wavelength}}{a numeric vector}
-##'    \item{\code{Qx}}{a numeric vector}
-##'    \item{\code{Gxx}}{a complex vector}
+##'    \item{\code{wavelength}}{ A numeric vector}
+##'    \item{\code{Qx}}{ A numeric vector}
+##'    \item{\code{Gxx}}{ A complex vector}
 ##'  }
 ##' @examples
 ##' data(G0)
 ##' \dontrun{demo(lattice_sum)}
 NULL
-
 
 ##' Rcpp module: dispersion
 ##' 
@@ -114,8 +112,8 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'   \item{dispersion}{Returns absorption, scattering and extinction cross-sections for two orthogonal polarisations at multiple angles of incidence, fixed wavelength (subroutine)} 
-##'   \item{dispersion_spectrum}{Returns absorption, scattering and extinction spectra for two orthogonal polarisations at multiple angles of incidence} 
+##'   \item{dispersion}{ Returns absorption, scattering and extinction cross-sections for two orthogonal polarisations at multiple angles of incidence, fixed wavelength (subroutine)} 
+##'   \item{dispersion_spectrum}{ Returns absorption, scattering and extinction spectra for two orthogonal polarisations at multiple angles of incidence} 
 ##' }
 ##' @examples
 ##' show( dispersion )

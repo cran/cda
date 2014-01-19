@@ -7,6 +7,7 @@
 
 using namespace Rcpp ;
 using namespace RcppArmadillo ;
+using namespace arma;
 using namespace std;
 
 
@@ -36,7 +37,6 @@ arma::colvec averaging(const arma::mat& R, const arma::cx_mat& A,
     RCP = arma::datum::sqrt2/2 * RCP ;
     LCP = arma::datum::sqrt2/2 * LCP ;
     arma::colvec xsec(Nangles); // temporary storage of cross-sections
-
     // left polarisation
     Eincident = incident_field(LCP, kvec, R, Angles);
     P = solve(A, Eincident);

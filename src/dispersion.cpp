@@ -11,6 +11,7 @@
 using namespace Rcpp ;
 using namespace RcppArmadillo ;
 using namespace std;
+using namespace arma;
 
 
 //
@@ -37,11 +38,10 @@ using namespace std;
     const arma::colvec  khat="0 0 1;"; 
     const arma::colvec kvec = kn*khat; 
     arma::cx_colvec LPP, LPS;
-    
     if(polarisation == 0){ // linear
-     LPP="(1,0) (0,0) (0,0);", LPS="(0,0) (1,0) (0,0);";
-      } else { // circular
-     LPP="(0,1) (1,0) (0,0);", LPS="(1,0) (0,1) (0,0);";
+      LPP="(1,0) (0,0) (0,0);", LPS="(0,0) (1,0) (0,0);";
+    } else { // circular
+      LPP="(1,0) (0,1) (0,0);", LPS="(0,1) (1,0) (0,0);";
       LPP = arma::datum::sqrt2/2 * LPP ;
       LPS = arma::datum::sqrt2/2 * LPS ;
     }

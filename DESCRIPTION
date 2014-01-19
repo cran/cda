@@ -1,5 +1,5 @@
 Package: cda
-Version: 1.5
+Version: 1.5.1
 Authors@R: c(person("Baptiste", "Auguie",
     email = "baptiste.auguie@gmail.com",
     role = c("aut", "cre")),
@@ -25,13 +25,12 @@ SystemRequirements: GNU make
 LinkingTo: Rcpp, RcppArmadillo
 Depends: methods, dielectric
 Suggests: rgl, grid, ggplot2, gridExtra, testthat, knitr
-Imports: Rcpp (>= 0.10.5), RcppArmadillo (>= 0.3.900), statmod,
-        randtoolbox, reshape2, plyr
+Imports: Rcpp, statmod, randtoolbox, reshape2, plyr
 RcppModules: cda, cd, dispersion, array
-Packaged: 2013-11-27 00:38:56 UTC; baptiste
+Packaged: 2014-01-19 16:01:29 UTC; baptiste
 Author: Baptiste Auguie [aut, cre],
   LAPACK authors [cph] (copyrights apply to src/zgels.f)
 Maintainer: Baptiste Auguie <baptiste.auguie@gmail.com>
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-11-27 07:10:09
+Date/Publication: 2014-01-19 20:44:59
