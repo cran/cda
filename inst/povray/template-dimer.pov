@@ -20,19 +20,20 @@ light_source{<1000,2500,-2500> color White}
 #declare RB = R * AR2;
 #declare RC = R * AR3 ;
 #declare Pitch = 1 * Scale;
-#declare Camera = 0.1;
+#declare Camera = 50;
 
 
 // Ground plane 
-plane { y, -100*RC
-finish {  F_Glass10 }	
-no_shadow
-no_reflection
-}
+//plane { y, -100*RC
+//finish {  F_Glass10 }	
+//no_shadow
+//no_reflection
+//}
 
 
 // Camera settings
-camera {location <2* Scale*Camera , 2* Scale* Camera ,2* Scale* Camera >
+//camera {location <2* Scale*Camera , 2* Scale* Camera ,2* Scale* Camera >
+camera {location <2* Scale*Camera , 2* Scale* Camera ,0* Scale* Camera >
 right <4/3, 0, 0>
        look_at  <0.0 , 0, 0.0>}
        
@@ -85,9 +86,9 @@ normal { dents 0 scale 1/5}
 //object{ Particle translate<0,0,0>}
 #include "euler.pov"
 
-#include "pos-dimer.pov"
+#include "dimer.pov"
 
 #include "axes.pov"
 
-object{ AxisXYZ( 0.12, 0.12, 0.12, Texture_A_Dark, Texture_A_Light)} 
+object{ AxisXYZ( 100, 100, 100, Texture_A_Dark, Texture_A_Light)} 
 

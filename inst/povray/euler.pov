@@ -8,23 +8,17 @@
    #local xt = vaxis_rotate(xp,zs,A.z);
    #local yt = vaxis_rotate(ys,zs,A.z);
    
-   #local cosphi = vdot(xp,x); 
-   #local sinphi = vdot(vcross(xp,x), z);
-   #local costheta = vdot(zs,z); 
-   #local sintheta= vdot(vcross(zs,z), xp); 
-   #local cospsi = vdot(xt,xp); 
-   #local sinpsi = vdot(vcross(xt,xp), zs); 
+   #local cosphi = cos(A.x); 
+   #local sinphi = sin(A.x);
+   #local costheta = cos(A.y); 
+   #local sintheta= sin(A.y); 
+   #local cospsi = cos(A.z); 
+   #local sinpsi = sin(A.z); 
    
       transform {
-       matrix < cospsi, sinpsi, 0,
-               -sinpsi, cospsi, 0,
-               0, 0, 1, 0,0,0 >
-      matrix < 1, 0, 0,
-               0, costheta, sintheta,
-               0, -sintheta, costheta, 0,0,0 >
-                   	      matrix < cosphi, sinphi, 0,
-               -sinphi, cosphi, 0,
-               0, 0, 1, 0,0,0 >
-
-   }
+       matrix < cosphi*costheta*cospsi - sinphi*sinpsi, sinphi*costheta*cospsi + cosphi*sinpsi, -sintheta*cospsi,
+                   -cosphi*costheta*sinpsi - sinphi*cospsi, -sinphi*costheta*sinpsi + cosphi*cospsi, sintheta*sinpsi,
+                    cosphi*sintheta, sinphi*sintheta, costheta,
+               0,0,0 >
+      }
 #end

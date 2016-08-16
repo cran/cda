@@ -19,36 +19,36 @@
                              }
 
 
-#macro Axis_( AxisLen, Dark_Texture,Light_Texture) 
+#macro Axis_( AxisLen, Dark_Texture,Light_Texture, scaling) 
  union{
-    cylinder { <0,-AxisLen,0>,<0,AxisLen,0>,0.001
+    cylinder { <0,-AxisLen,0>,<0,AxisLen,0>, 0.001*1000*scaling
                    texture{checker texture{Dark_Texture } 
                                texture{Light_Texture}
-                       translate<0.1,0,0.1>}
+                       translate<0.1,0,0.1>*1000*scaling}
              }
-    cone{<0,AxisLen,0>,0.005,<0,AxisLen+0.01,0>,0
+    cone{<0,AxisLen,0>,0.003*1000*scaling,<0,AxisLen+0.01*1000*scaling,0>,0
           texture{Dark_Texture}
          }
      } // end of union                   
 #end // of macro "Axis()"
 //------------------------------------------------------------------------
-#macro AxisXYZ( AxisLenX, AxisLenY, AxisLenZ, Tex_Dark, Tex_Light)
+#macro AxisXYZ( AxisLenX, AxisLenY, AxisLenZ, scaling)
 //--------------------- drawing of 3 Axes --------------------------------
 union{
 #if (AxisLenX != 0)
- object { Axis_(AxisLenX, Tex_Dark, Tex_Light)   rotate< 0,0,-90>
+ object { Axis_(AxisLenX,  pigment{color rgb<1, 0,0>}, pigment{color rgb<1,1,1>}, scaling)   rotate< 0,0,-90>
  no_shadow
 	no_reflection
 }// x-Axis
 #end // of #if 
 #if (AxisLenY != 0)
- object { Axis_(AxisLenY, Tex_Dark, Tex_Light)   rotate< 0,0,  0>
+ object { Axis_(AxisLenY,  pigment{color rgb<0,1,0>}, pigment{color rgb<1,1,1>}, scaling)  rotate< 0,0,  0>
  no_shadow
 	no_reflection
 }// y-Axis
 #end // of #if 
 #if (AxisLenZ != 0)
- object { Axis_(AxisLenZ, Tex_Dark, Tex_Light)   rotate<90,0,  0>
+ object { Axis_(AxisLenZ,  pigment{color rgb<0,0,1>}, pigment{color rgb<1,1,1>}, scaling)   rotate<90,0,  0>
  no_shadow
 	no_reflection
 }// z-Axis
